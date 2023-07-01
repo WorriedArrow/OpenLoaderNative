@@ -14,7 +14,7 @@ setInterval(() => {
   el.id = 'oln-ver';
 
   el.textContent = 'OpenLoaderNative <hash>';
-  el.onclick = () => DiscordNative.ipc.send('DISCORD_UPDATED_QUOTES', 'o');
+  el.onclick = () => OpenLoaderNative.ipc.send("ol-test-splash");
 
   host.append(document.createTextNode(' | '), el);
 }, 2000);

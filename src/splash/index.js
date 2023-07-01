@@ -1,9 +1,14 @@
-const { app, ipcMain } = require('electron');
+const { app, ipcMain, BrowserWindow } = require('electron');
 
 const moduleUpdater = require("../updater/moduleUpdater");
 const updater = require("../updater/updater");
 
-let launched, win;
+
+let launched;
+/**
+ * @type {BrowserWindow} win
+ */
+let win;
 
 
 exports.initSplash = (startMin) => {
@@ -11,23 +16,31 @@ exports.initSplash = (startMin) => {
   if (inst) initNew(inst);
     else initOld();
 
-  launchSplash(startMin);
+  var window = launchSplash(startMin);
+  setTimeout(() => {	
+    destroySplash();	
+    launchMain();	
+    setTimeout(() => {	
+      events.emit('APP_SHOULD_SHOW');	
+    }, 100);	
+  }, 300);
+  return window;
 };
 
 exports.focusWindow = () => win?.focus?.();
 exports.pageReady = () => destroySplash() || process.nextTick(() => events.emit('APP_SHOULD_SHOW'));
 
 const destroySplash = () => {
-  win?.setSkipTaskbar?.(true);
-
-  setTimeout(() => {
-    if (!win) return;
-
-    win.hide();
-    win.close();
+  win?.setSkipTaskbar?.(true);	
+  setTimeout(() => {	
+    if (!win) return;	
+    win.hide();	
+    win.close();	
     win = null;
   }, 100);
 };
+
+exports.destroySplash = destroySplash;
 
 const launchMain = () => {
   moduleUpdater.events.removeAllListeners(); // Remove updater v1 listeners
@@ -38,6 +51,7 @@ const launchMain = () => {
     launched = true;
     events.emit('APP_SHOULD_LAUNCH');
   }
+  destroySplash();
 };
 
 const sendState = (status, s = {}) => {
@@ -56,11 +70,11 @@ const launchSplash = (startMin) => {
   if (process.platform !== 'darwin') win.on('closed', () => !launched && app.quit());
 
   ipcMain.on('ss', launchMain);
-  ipcMain.on('sq', app.quit);
+  ipcMain.on('sq', win.destroy);
 
   if (!startMin) win.once('ready-to-show', win.show);
+  return win;
 };
-
 
 const events = exports.events = new (require('events').EventEmitter)();
 

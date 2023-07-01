@@ -10,7 +10,8 @@ module.exports = (o, n) => {
     ...o
   });
 
-  w.loadURL('https://cdn.openasar.dev/' + n + '?v=' + olnVersion);
+  if(n !== "splash") w.loadURL('https://cdn.openasar.dev/' + n + '?v=' + olnVersion);
+  else w.loadFile(require('path').join(__dirname, '..', 'splash', 'splash.html'));
 
   return w;
 };

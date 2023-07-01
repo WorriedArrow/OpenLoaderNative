@@ -8,7 +8,7 @@ const exec = process.execPath;
 const app = resolve(exec, '..');
 
 
-exports.do = () => {
+exports.run = () => {
   const flag = join(app, '.first-run');
   if (fs.existsSync(flag)) return; // Already done, skip
 

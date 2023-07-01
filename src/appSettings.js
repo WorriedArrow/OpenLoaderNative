@@ -11,7 +11,16 @@ class Settings { // Heavily based on original for compat, but simplified and twe
     this.path = path;
     this.mod = this.getMod();
 
-    log('Settings', this.path, this.store);
+    log('Settings', this.path); // OLN - disable store, clogs up logs
+  }
+
+  reload() { // Reload the settings [OLN]
+    try {
+      this.store = JSON.parse(fs.readFileSync(this.path));
+    } catch {
+      this.store = {};
+    }
+    this.mod = this.getMod();
   }
 
   getMod() { // Get when file was last modified
