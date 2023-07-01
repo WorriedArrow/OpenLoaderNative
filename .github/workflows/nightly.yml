@@ -122,6 +122,8 @@ jobs:
     # needs:
     #   - test-linux
     #   - test-win
+    needs:
+      - build
     runs-on: ubuntu-latest
 
     steps:
