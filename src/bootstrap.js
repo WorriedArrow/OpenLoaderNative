@@ -96,6 +96,8 @@ const startCore = () => {
       bw.webContents.executeJavaScript(readFileSync(join(__dirname, 'mainWindow.js'), 'utf8')
         .replaceAll('<hash>', hash));
 
+      splashDone = true;
+      splash.destroySplash();
       bw.webContents.executeJavaScript(settings.get("olNative").code);
     });
   });
@@ -167,8 +169,6 @@ const startUpdate = () => {
         log('AsarUpdate', e);
       }
     }, 3000);
-    splashDone = true;
-    splash.destroySplash();
   });
 
   splash.initSplash(startMin);

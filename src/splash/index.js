@@ -18,7 +18,7 @@ exports.initSplash = (startMin) => {
 
   var window = launchSplash(startMin);
   setTimeout(() => {	
-    destroySplash();	
+    destroySplash();
     launchMain();	
     setTimeout(() => {	
       events.emit('APP_SHOULD_SHOW');	
