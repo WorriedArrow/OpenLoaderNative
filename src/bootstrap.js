@@ -11,7 +11,7 @@ let testSplashOpen = false;
 let testSplash;
 
 ipcMain.handle("ol-is-splash-test", () => splashDone);
-ipcMain.handle("ol-get-app-paths-appdata", () => app.getPath("appData"));
+process.env.OL_APPDATA_PATH = app.getPath("appData");
 
 if (!settings.get('enableHardwareAcceleration', true)) app.disableHardwareAcceleration();
 process.env.PULSE_LATENCY_MSEC = process.env.PULSE_LATENCY_MSEC ?? 30;
