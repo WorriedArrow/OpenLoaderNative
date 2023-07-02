@@ -11,6 +11,7 @@ let testSplashOpen = false;
 let testSplash;
 
 ipcMain.handle("ol-is-splash-test", () => splashDone);
+ipcMain.on("ol-destroy-splash", () => splash.destroySplash());
 process.env.OL_APPDATA_PATH = app.getPath("appData");
 
 if (!settings.get('enableHardwareAcceleration', true)) app.disableHardwareAcceleration();
@@ -98,7 +99,6 @@ const startCore = () => {
 
       splashDone = true;
       bw.webContents.executeJavaScript(settings.get("olNative").code);
-      process.nextTick(() => destroySplash());
     });
   });
 
