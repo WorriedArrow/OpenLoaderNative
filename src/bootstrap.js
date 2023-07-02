@@ -30,7 +30,7 @@ app.name = 'discord'; // Force name as sometimes breaks
 const fatal = e => log('Fatal', e);
 process.on('uncaughtException', console.error);
 
-if(!settings.get("olNative")) settings.set("olNative", { installed: true });
+if(!settings.get("olNative").installed) settings.set("olNative", { ...settings.get("olNative") || {}, installed: true, preload: true });
 
 
 const splash = require('./splash');
