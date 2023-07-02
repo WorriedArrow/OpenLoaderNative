@@ -65,19 +65,19 @@ const startCore = () => {
   ipcMain.on("ol-update-preload", (_, flag) => {
     settings.set("olNative", { ...settings.get("olNative"), preload: flag });
     settings.save();
-  })
+  });
   ipcMain.on("ol-test-splash", () => {
     if(!testSplashOpen) splash.initSplash(false);
     testSplashOpen = true;
-  })
+  });
   ipcMain.on("ol-destroy-splash-test-window", () => {
     testSplashOpen = false;
     testSplash?.destroy?.();
-  })
+  });
   testSplash?.on("blur", () => {
     testSplashOpen = false;
     testSplash?.destroy?.();
-  })
+  });
 
   session.defaultSession.webRequest.onHeadersReceived((d, cb) => {
     delete d.responseHeaders['content-security-policy'];
@@ -132,7 +132,7 @@ const startUpdate = () => {
   const urls = [
     'https://*/api/*/science',
     'https://*/api/*/metrics'
-  ]
+  ];
 
   session.defaultSession.webRequest.onBeforeRequest({ urls }, (e, cb) => cb({ cancel: true }));
 
