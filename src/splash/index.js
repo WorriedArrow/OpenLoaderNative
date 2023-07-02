@@ -51,7 +51,6 @@ const launchMain = () => {
     launched = true;
     events.emit('APP_SHOULD_LAUNCH');
   }
-  destroySplash();
 };
 
 const sendState = (status, s = {}) => {
