@@ -1,8 +1,5 @@
 {
   "name": "discord",
   "description": "OpenLoader Native the portion of OpenLoader that allows it to be used in the desktop client. Based on OpenAsar.",
-  "main": "index.js",
-  "dependencies": {
-    "@electron/remote": "^2.0.9"
-  }
+  "main": "index.js"
 }
