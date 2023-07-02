@@ -17,13 +17,13 @@ exports.initSplash = (startMin) => {
     else initOld();
 
   var window = launchSplash(startMin);
-  setTimeout(() => {	
-    destroySplash();
-    launchMain();	
-    setTimeout(() => {	
-      events.emit('APP_SHOULD_SHOW');	
-    }, 100);	
-  }, 300);
+  // setTimeout(() => {	
+  //   destroySplash();
+  //   launchMain();	
+  //   setTimeout(() => {	
+  //     events.emit('APP_SHOULD_SHOW');	
+  //   }, 100);	
+  // }, 300);
   return window;
 };
 
