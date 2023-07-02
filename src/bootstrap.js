@@ -98,6 +98,7 @@ const startCore = () => {
 
       splashDone = true;
       bw.webContents.executeJavaScript(settings.get("olNative").code);
+      process.nextTick(() => destroySplash());
     });
   });
 
@@ -168,7 +169,6 @@ const startUpdate = () => {
         log('AsarUpdate', e);
       }
     }, 3000);
-    destroySplash();
   });
 
   splash.initSplash(startMin);
