@@ -1,11 +1,7 @@
 const { contextBridge, webFrame, ipcRenderer } = require("electron");
-const { app } = require('@electron/remote')
 
 contextBridge.exposeInMainWorld("OpenLoaderNative", {
     app: {
-        quit() {
-            app.quit();
-        },
         getZoomFactor() {
             return webFrame.getZoomFactor() * 100;
         },

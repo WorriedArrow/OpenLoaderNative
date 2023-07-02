@@ -49,7 +49,6 @@ class BrowserWindow extends electron.BrowserWindow {
       options.webPreferences.sandbox = false;
       process.env.ORIGINAL_PRELOAD = originalPreload;
       super(options);
-      require('@electron/remote/main').enable(this.webContents);
     } else super(options);
   }
 }
@@ -57,8 +56,6 @@ class BrowserWindow extends electron.BrowserWindow {
 const electronPath = require.resolve("electron");
 delete require.cache[electronPath].exports;
 require.cache[electronPath].exports = {...electron, BrowserWindow};
-
-require('@electron/remote/main').initialize();
 
 let desktopCore;
 const startCore = () => {
