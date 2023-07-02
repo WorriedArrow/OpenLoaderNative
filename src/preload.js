@@ -1,4 +1,4 @@
-const { contextBridge, webFrame, ipcRenderer, app } = require("electron");
+const { contextBridge, webFrame, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("OpenLoaderNative", {
     app: {
@@ -12,14 +12,14 @@ contextBridge.exposeInMainWorld("OpenLoaderNative", {
     ipc: ipcRenderer
 });
 
-const invokePath = async () => {
-    return await ipcRenderer.invoke("ol-get-app-paths-appdata");
+async function invokePath() {
+    return ipcRenderer.invoke("ol-get-app-paths-appdata");
 }
 
 (async () => {
 // Load OpenLoader
 const buildInfo = JSON.parse(require('fs').readFileSync(require('path').join(process.resourcesPath, 'build_info.json'), 'utf8'));
-const settings = JSON.parse(require("fs").readFileSync(require('path').join(process.env.DISCORD_USER_DATA_DIR ?? require("path").join(invokePath(), 'discord' + (buildInfo.releaseChannel === 'stable' ? '' : buildInfo.releaseChannel)), 'settings.json')));
+const settings = JSON.parse(require("fs").readFileSync(require('path').join(process.env.DISCORD_USER_DATA_DIR ?? require("path").join((await invokePath()), 'discord' + (buildInfo.releaseChannel === 'stable' ? '' : buildInfo.releaseChannel)), 'settings.json')));
 
 const originalKill = process.kill;
 process.kill = function() {};
