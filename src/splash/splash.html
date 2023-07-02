@@ -137,7 +137,8 @@
   }
 </style>
 
-<script type="module">
+<script>
+  (async function(){
   /*
     * Title Caps
     * 
@@ -258,4 +259,5 @@
   if(isTest) setInterval(() => {
         barFill.style.width = Math.floor(Math.random() * 100) + '%';
       }, 1000);
+    })();
 </script>
