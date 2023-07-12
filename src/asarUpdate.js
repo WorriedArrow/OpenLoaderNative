@@ -15,7 +15,6 @@ const redirs = url => new Promise(res => get(url, r => { // Minimal wrapper arou
 }));
 
 module.exports = async () => { // (Try) update asar
-  Electron.shell.beep();
   if (!olnVersion.includes('-')) return;
   log('AsarUpdate', 'Updating...');
 
