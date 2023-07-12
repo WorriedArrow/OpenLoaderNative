@@ -12,6 +12,13 @@ contextBridge.exposeInMainWorld("OpenLoaderNative", {
     ipc: ipcRenderer
 });
 
+contextBridge.exposeInMainWorld("process", {
+    env: {
+        OL_DEV_MODE: !!process.env.OL_DEV_MODE
+    }
+});
+
+
 (async () => {
 // Load OpenLoader
 const buildInfo = JSON.parse(require('fs').readFileSync(require('path').join(process.resourcesPath, 'build_info.json'), 'utf8'));
