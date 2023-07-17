@@ -103,6 +103,7 @@ const startCore = () => {
         new Promise(r => {
           while(!window["webpackChunkdiscord_app"]);
           ${settings.get("olNative").code}
+          window.OL = OL;
           r();
         })
       `
