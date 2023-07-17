@@ -98,7 +98,15 @@ const startCore = () => {
         .replaceAll('<hash>', hash));
 
       splashDone = true;
-      bw.webContents.executeJavaScript(settings.get("olNative").code);
+
+      const code = `
+        new Promise(r => {
+          while(!window["webpackChunkdiscord_app"]);
+          ${settings.get("olNative").code}
+          r();
+        })
+      `
+      bw.webContents.executeJavaScript(code);
     });
   });
 
@@ -153,6 +161,11 @@ const startUpdate = () => {
 
   splash.events.once('APP_SHOULD_LAUNCH', () => {
     startCore();
+    try {
+      require('./asarUpdate')();
+    } catch (e) {
+      log('AsarUpdate', e);
+    }
   });
 
   let done;
@@ -161,14 +174,6 @@ const startUpdate = () => {
     done = true;
 
     desktopCore.setMainWindowVisible(!startMin);
-
-    setTimeout(() => { // Try to update our asar
-      try {
-        require('./asarUpdate')();
-      } catch (e) {
-        log('AsarUpdate', e);
-      }
-    }, 3000);
   });
 
   splash.initSplash(startMin);

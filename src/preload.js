@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld("OpenLoaderNative", {
     ipc: ipcRenderer
 });
 
+console.log(process.env);
+
 contextBridge.exposeInMainWorld("process", {
     env: {
         OL_DEV_MODE: !!process.env.OL_DEV_MODE
@@ -29,7 +31,4 @@ process.kill = function() {};
 console.log(settings);
 if(settings.olNative.preload ?? true) require(process.env.ORIGINAL_PRELOAD);
 process.kill = originalKill;
-
-// Lock console
-Object.freeze(console);
 })();
