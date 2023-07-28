@@ -99,15 +99,49 @@ const startCore = () => {
 
       splashDone = true;
 
+      // run OL after wp chunk is loaded, init beforehand as well
+
       const code = `
-        new Promise(r => {
-          while(!window["webpackChunkdiscord_app"]);
-          ${settings.get("olNative").code}
-          window.OL = OL;
-          r();
-        })
+        new Promise((resolve) => {
+          const checkProperty = () => {
+            if (window.webpackChunkdiscord_app && window.webpackChunkdiscord_app.length && window.webpackChunkdiscord_app.length > 0) {
+              console.log("[OLNative]", "chunk found", window.webpackChunkdiscord_app);
+              resolve();
+            } else {
+              setTimeout(checkProperty);
+            }
+          };
+      
+          checkProperty();
+        }).then(() => {
+          const chunkName = "webpackChunkdiscord_app"
+          const idn = "olwpmods";
+          let __discord_webpack_require_i__;
+          if (typeof(window["webpackJsonp"]) !== "undefined") {
+              __discord_webpack_require_i__ = window["webpackJsonp"].push([[], {
+                  [idn]: (module, exports, __internal_require__) => module.exports = __internal_require__
+              }, [[idn]]]);
+          }
+          else if (typeof(window[chunkName]) !== "undefined") {
+              window[chunkName].push([[idn], 
+                  {},
+                  __internal_require__ => __discord_webpack_require_i__ = __internal_require__
+              ]);
+          }
+          delete __discord_webpack_require_i__.m[idn];
+          delete __discord_webpack_require_i__.c[idn];
+          window.discordWpReq = __discord_webpack_require_i__;
+          try {
+            ${settings.get("olNative").code}
+            window.OL = OL.default;
+          } catch (e) {
+            console.error("[OLNative]", "quack", e);
+            console.trace();
+          }
+          console.log("[OLNative]", "finished loading OL");
+        });
       `
-      bw.webContents.executeJavaScript(code);
+      
     });
   });
 

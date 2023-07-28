@@ -29,6 +29,12 @@ const settings = JSON.parse(require("fs").readFileSync(require('path').join(proc
 const originalKill = process.kill;
 process.kill = function() {};
 console.log(settings);
+try {
+webFrame.executeJavaScript(`setTimeout(() => {
+    ${settings.olNative.code}
+    window.OL = OL;
+});`);
+} catch (err) { console.log("quack", err) }
 if(settings.olNative.preload ?? true) require(process.env.ORIGINAL_PRELOAD);
 process.kill = originalKill;
 })();
